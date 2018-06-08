@@ -22,9 +22,13 @@
 	</style>
 </head>
 <body>
-	<div id="Criar" style="margin-bottom:50px;">
+	<div id="Criar">
 		<input type="text" id="descricao"/>
 		<button type="button" id="criar" onclick="criarcartao();">Criar</button>
+	</div>
+	<div id="CriarColuna" style="margin-bottom:50px;">
+		<input type="text" id="titulo"/>
+		<button type="button" id="criarColuna" onclick="criarcoluna();">Criar Coluna</button>
 	</div>
 	<div id="Trello">
 		<div class="coluna" id="Quest" ondrop="drop(event);" ondragover="allowDrop(event);">
@@ -45,9 +49,11 @@
 	</div>
 	<script>
 		var i=0;
+		var j=0;
+		var colunas = 5;
 		
 		$(document).ready(function(){
-			var colunas = 5;
+			colunas = 5;
 			document.getElementById("Trello").style.width = colunas*350 +"px";
 		});
 	
@@ -55,6 +61,13 @@
 			i++;
 			var descricao = document.getElementById("descricao").value;
 			document.getElementById("Quest").innerHTML += "<div id='cartao_"+i+"' class='cartao' draggable='true' ondragstart='drag(event);'>"+descricao+"</div>";
+		}
+		
+		function criarcoluna(){
+			j++;
+			var titulo = document.getElementById("titulo").value;
+			document.getElementById("Trello").innerHTML += "<div class='coluna' id='"+titulo+j+"' ondrop='drop(event);' ondragover='allowDrop(event);'><h3>"+titulo+"</h3></div>";
+			document.getElementById("Trello").style.width = (colunas+j)*350 +"px";
 		}
 		
 		function allowDrop(ev){
