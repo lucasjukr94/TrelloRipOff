@@ -26,27 +26,27 @@
 </head>
 <body>
 	<div id="Criar">
-		<input type="text" id="descricao"/>
+		<input type="text" id="descricao" ondrop="return false;"/>
 		<button type="button" id="criar" onclick="criarcartao();">Criar</button>
 	</div>
 	<div id="CriarColuna" style="margin-bottom:50px;">
-		<input type="text" id="titulo"/>
+		<input type="text" id="titulo" ondrop="return false;"/>
 		<button type="button" id="criarColuna" onclick="criarcoluna();">Criar Coluna</button>
 	</div>
 	<div id="Trello">
-		<div class="coluna" id="Quest" ondrop="drop(event);" ondragover="allowDrop(event);">
+		<div class="coluna" id="Quest" ondrop="drop(event,this);" ondragover="allowDrop(event);">
 			<h3>Quest</h3>
 		</div>
-		<div class="coluna" id="Doing" ondrop="drop(event);" ondragover="allowDrop(event);">
+		<div class="coluna" id="Doing" ondrop="drop(event,this);" ondragover="allowDrop(event);">
 			<h3>Doing</h3>
 		</div>
-		<div class="coluna" id="DoingPrioridade2" ondrop="drop(event);" ondragover="allowDrop(event);">
+		<div class="coluna" id="DoingPrioridade2" ondrop="drop(event,this);" ondragover="allowDrop(event);">
 			<h3>Doing Prioridade 2</h3>
 		</div>
-		<div class="coluna" id="Done" ondrop="drop(event);" ondragover="allowDrop(event);">
+		<div class="coluna" id="Done" ondrop="drop(event,this);" ondragover="allowDrop(event);">
 			<h3>Done</h3>
 		</div>
-		<div class="coluna" id="Maintenance" ondrop="drop(event);" ondragover="allowDrop(event);">
+		<div class="coluna" id="Maintenance" ondrop="drop(event,this);" ondragover="allowDrop(event);">
 			<h3>Maintenance</h3>
 		</div>
 	</div>
@@ -63,13 +63,13 @@
 		function criarcartao(){
 			i++;
 			var descricao = document.getElementById("descricao").value;
-			document.getElementById("Quest").innerHTML += "<div id='cartao_"+i+"' class='cartao' draggable='true' ondragstart='drag(event);'>"+descricao+"</div>";
+			document.getElementById("Quest").innerHTML += "<div id='cartao_"+i+"' class='cartao' ondrop='' draggable='true' ondragstart='drag(event);'>"+descricao+"</div>";
 		}
 		
 		function criarcoluna(){
 			j++;
 			var titulo = document.getElementById("titulo").value;
-			document.getElementById("Trello").innerHTML += "<div class='coluna' id='coluna_"+titulo+j+"' ondrop='drop(event);' ondragover='allowDrop(event);'><h3>"+titulo+"</h3></div>";
+			document.getElementById("Trello").innerHTML += "<div class='coluna' id='coluna_"+titulo+j+"' ondrop='drop(event,this);' ondragover='allowDrop(event);'><h3>"+titulo+"</h3></div>";
 			document.getElementById("Trello").style.width = (colunas+j)*350 +"px";
 		}
 		
@@ -79,13 +79,11 @@
 		
 		function drag(ev){
 			ev.dataTransfer.setData("text", ev.target.id);
-			console.log(ev);
 		}
 		
-		function drop(ev){
-			console.log(ev);
+		function drop(ev,el){
 			var data = ev.dataTransfer.getData("text");
-			ev.target.appendChild(document.getElementById(data));
+			el.appendChild(document.getElementById(data));
 		}
 	</script>
 </body>
