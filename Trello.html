@@ -18,6 +18,9 @@
 		
 		.cartao{
 			border : solid thin black;
+			height:50px;
+			padding:10px;
+			background-color:lightgray;
 		}
 	</style>
 </head>
@@ -66,7 +69,7 @@
 		function criarcoluna(){
 			j++;
 			var titulo = document.getElementById("titulo").value;
-			document.getElementById("Trello").innerHTML += "<div class='coluna' id='"+titulo+j+"' ondrop='drop(event);' ondragover='allowDrop(event);'><h3>"+titulo+"</h3></div>";
+			document.getElementById("Trello").innerHTML += "<div class='coluna' id='coluna_"+titulo+j+"' ondrop='drop(event);' ondragover='allowDrop(event);'><h3>"+titulo+"</h3></div>";
 			document.getElementById("Trello").style.width = (colunas+j)*350 +"px";
 		}
 		
