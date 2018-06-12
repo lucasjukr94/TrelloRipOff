@@ -1,0 +1,121 @@
+<!--Trello-->
+<html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<style>
+		.coluna{
+			width : 300px;
+			height : 500px;;
+			border : solid medium black;
+			border-radius:5px;
+			float : left;
+			margin-right : 20px;
+			overflow-y : scroll;
+		}
+		
+		#Trello{
+			overflow-x : scroll;
+		}
+		
+		.cartao{
+			border : solid thin black;
+			min-height:50px;
+			padding:10px;
+			background-color:lightgray;
+		}
+	</style>
+</head>
+<body>
+	<div>
+		<div style="float:left;">
+			<input type="radio" name="cortrello" value="red" style="float:left;" /><p style="color:red">RED</p>
+		</div>
+		<div style="float:left;">
+			<input type="radio" name="cortrello" value="blue" style="float:left;" /><p style="color:blue">BLUE</p>
+		</div>
+		<div style="float:left;">
+			<input type="radio" name="cortrello" value="green" style="float:left;" /><p style="color:green">GREEN</p>
+		</div>
+		<div style="float:left;">
+			<input type="radio" name="cortrello" value="lightgray" style="float:left;" /><p>DEFAULT</p>
+		</div>
+	</div>
+	<div id="Criar">
+		<input type="text" id="descricao" ondrop="return false;"/>
+		<button type="button" id="criar" onclick="criarcartao();">Criar</button>
+	</div>
+	<div id="CriarColuna" style="margin-bottom:50px;">
+		<input type="text" id="titulo" ondrop="return false;" maxlength=100/>
+		<button type="button" id="criarColuna" onclick="criarcoluna();">Criar Coluna</button>
+	</div>
+	<div id="Trello">
+		<div class="coluna" id="Quest" ondrop="drop(event,this);" ondragover="allowDrop(event);">
+			<h3>Quest</h3>
+		</div>
+		<div class="coluna" id="Doing" ondrop="drop(event,this);" ondragover="allowDrop(event);">
+			<h3>Doing</h3>
+		</div>
+		<div class="coluna" id="DoingPrioridade2" ondrop="drop(event,this);" ondragover="allowDrop(event);">
+			<h3>Doing Prioridade 2</h3>
+		</div>
+		<div class="coluna" id="Done" ondrop="drop(event,this);" ondragover="allowDrop(event);">
+			<h3>Done</h3>
+		</div>
+		<div class="coluna" id="Maintenance" ondrop="drop(event,this);" ondragover="allowDrop(event);">
+			<h3>Maintenance</h3>
+		</div>
+	</div>
+	<script>
+		var i=0;
+		var j=0;
+		var colunas = 5;
+		
+		$(document).ready(function(){
+			colunas = 5;
+			document.getElementById("Trello").style.width = colunas*350 +"px";
+		});
+	
+		function criarcartao(){
+			i++;
+			var descricao = document.getElementById("descricao").value;
+			var listaCores = document.querySelectorAll('[name="cortrello"]');
+			var cor;
+			for(var k=0;k<listaCores.length;k++){
+				if(listaCores[k].checked){
+					cor = listaCores[k].value;
+					break;
+				}
+			}
+			document.getElementById("Quest").innerHTML += "<div style='background-color:"+cor+"' id='cartao_"+i+"' class='cartao' ondrop='' draggable='true' ondragstart='drag(event);'>"+descricao+"</div>";
+		}
+		
+		function criarcoluna(){
+			j++;
+			var listaCores = document.querySelectorAll('[name="cortrello"]');
+			var cor;
+			for(var k=0;k<listaCores.length;k++){
+				if(listaCores[k].checked){
+					cor = listaCores[k].value;
+					break;
+				}
+			}
+			var titulo = document.getElementById("titulo").value;
+			document.getElementById("Trello").innerHTML += "<div style='background-color:"+cor+"' class='coluna' id='coluna_"+titulo+j+"' ondrop='drop(event,this);' ondragover='allowDrop(event);'><h3>"+titulo+"</h3></div>";
+			document.getElementById("Trello").style.width = (colunas+j)*350 +"px";
+		}
+		
+		function allowDrop(ev){
+			ev.preventDefault();
+		}
+		
+		function drag(ev){
+			ev.dataTransfer.setData("text", ev.target.id);
+		}
+		
+		function drop(ev,el){
+			var data = ev.dataTransfer.getData("text");
+			el.appendChild(document.getElementById(data));
+		}
+	</script>
+</body>
+</html>
