@@ -1,0 +1,158 @@
+<style>
+    .coluna {
+        width: 400px;
+        height: 500px;
+        border: solid medium lightgray;
+        border-radius: 5px;
+        float: left;
+        margin-right: 20px;
+        
+        margin-bottom: 20px;
+        background-color: lightgray;
+    }
+
+    .colunaChild {
+        width: 390px;
+        height: 420px;
+        border: solid medium lightgray;
+        border-radius: 5px;
+        overflow-y: auto;
+        background-color: lightgray;
+    }
+
+    /*
+        #Trello {
+            overflow-x: scroll;
+        }
+    */
+
+    .cartao {
+        border: solid thin gray;
+        border-radius: 5px;
+        min-height: 50px;
+        padding: 10px;
+        background-color: white;
+        margin-bottom: 5px;
+    }
+
+    .cartao:hover {
+        opacity: 0.5;
+    }
+
+    /* width */
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1; 
+    }
+ 
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #888; 
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555; 
+    }
+</style>
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box" style="background-color: whitesmoke;">
+            <div class="box-body">
+                <div id="Criar">
+                    <table>
+                        <tr>
+                            <td><input type="radio" name="cortrello" value="red" /></td>
+                            <td>
+                                <p style="color: red">RED</p>
+                            </td>
+                            <td><input type="radio" name="cortrello" value="blue" /></td>
+                            <td>
+                                <p style="color: blue">BLUE</p>
+                            </td>
+                            <td><input type="radio" name="cortrello" value="green" /></td>
+                            <td>
+                                <p style="color: green">GREEN</p>
+                            </td>
+                            <td><input type="radio" name="cortrello" value="white" /></td>
+                            <td>
+                                <p>DEFAULT</p>
+                            </td>
+                        </tr>
+                    </table>
+                    <input type="text" id="descricao" ondrop="return false;" class="form-control" style="width: 300px; float: left;"/>
+                    <button type="button" id="criar" onclick="criarcartao();" class="btn btn-default">Criar Cartão</button>
+                </div>
+                <div id="CriarColuna" style="margin-bottom: 50px;">
+                    <input type="text" id="titulo" ondrop="return false;" maxlength=100 class="form-control" style="width: 300px; float: left;"/>
+                    <button type="button" id="criarColuna" onclick="criarcoluna();" class="btn btn-default">Criar Coluna</button>
+                </div>
+                <div id="Trello">
+                    <div class="coluna" id="Quest">
+                        <h3 style="text-align: center;">Quest</h3>
+                        <div class="colunaChild" id="QuestChild" ondrop="drop(event,this);" ondragover="allowDrop(event);"></div>
+                    </div>
+                    <div class="coluna" id="Doing">
+                        <h3 style="text-align: center;">Doing</h3>
+                        <div class="colunaChild" id="DoingChild" ondrop="drop(event,this);" ondragover="allowDrop(event);"></div>
+                    </div>
+                    <div class="coluna" id="DoingPrioridade2">
+                        <h3 style="text-align: center;">Doing Prioridade 2</h3>
+                        <div class="colunaChild" id="DoingPrioridadeChild" ondrop="drop(event,this);" ondragover="allowDrop(event);"></div>
+                    </div>
+                    <div class="coluna" id="Done">
+                        <h3 style="text-align: center;">Done</h3>
+                        <div class="colunaChild" id="DoneChild" ondrop="drop(event,this);" ondragover="allowDrop(event);"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+		var i=0;
+		var j=0;
+
+		function criarcartao(){
+			i++;
+			var descricao = document.getElementById("descricao").value;
+			var listaCores = document.querySelectorAll('[name="cortrello"]');
+			var cor;
+			for(var k=0;k<listaCores.length;k++){
+				if(listaCores[k].checked){
+					cor = listaCores[k].value;
+					break;
+				}
+			}
+		    var letraCor = "black";
+            if (cor != "white" && cor != null) {
+                letraCor = "white";
+            }
+			document.getElementById("QuestChild").innerHTML += "<div style='background-color:"+cor+";color:"+letraCor+";' id='cartao_"+i+"' class='cartao' ondrop='' draggable='true' ondragstart='drag(event);'>"+descricao+"</div>";
+		}
+
+		function criarcoluna(){
+			j++;
+			var titulo = document.getElementById("titulo").value;
+			document.getElementById("Trello").innerHTML += "<div class='coluna' id='coluna_"+titulo+j+"'><h3 style='text-align:center;'>"+titulo+"</h3><div class='colunaChild' id='"+titulo+j+"Child' ondrop='drop(event,this);' ondragover='allowDrop(event);'></div></div>";
+		}
+
+		function allowDrop(ev){
+			ev.preventDefault();
+		}
+
+		function drag(ev){
+			ev.dataTransfer.setData("text", ev.target.id);
+		}
+
+		function drop(ev,el){
+			var data = ev.dataTransfer.getData("text");
+			el.appendChild(document.getElementById(data));
+		}
+</script>
